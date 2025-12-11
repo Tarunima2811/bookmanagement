@@ -4,9 +4,10 @@ import com.application.bookmanagement.entity.Book;
 import com.application.bookmanagement.logger.LogBuilder;
 import com.application.bookmanagement.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,21 +22,33 @@ public class BookController {
     LogBuilder logBuilder;
 
     @GetMapping(path = "/all")
-    public List<Book> findAllBooks() {
+    public Page<Book> findAllBooksByPage(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "5") int size,
+                                   @RequestParam(defaultValue = "bookTitle") String sortBy,
+                                   @RequestParam(defaultValue = "true") boolean ascending) {
         logBuilder.info("Finding all books in the system");
-        return service.findAllBooks();
+        return service.findAllBooksByPage(page, size, sortBy, ascending);
     }
 
     @GetMapping(path = "book/{id}")
-    public Optional<Book> findBookById(@PathVariable UUID id) {
+    public ResponseEntity<?> findBookById(@PathVariable UUID id) {
         logBuilder.info(String.format("Finding book by id %s", id));
-        return service.findBookById(id);
+        Optional<Book> book = service.findBookById(id);
+        if (book.isPresent())
+            return ResponseEntity.ok(book.get());
+        else
+            return ResponseEntity.notFound().build();
+
     }
 
     @PostMapping(path = "addOrUpdateBook")
-    public Book addorUpdateBook(@RequestBody Book book) {
+    public ResponseEntity<?> addOrUpdateBook(@RequestBody Book book) {
         logBuilder.info(String.format("Adding/Updating book: %s", book.getBookTitle()));
-        return service.addOrUpdateBook(book);
+        if (null == book.getBookTitle()) {
+            logBuilder.error("Missing mandatory field: BookTitle");
+            return ResponseEntity.badRequest().body("Missing mandatory field: BookTitle");
+        }
+        return ResponseEntity.ok(service.addOrUpdateBook(book));
     }
 
     @DeleteMapping(path = "delete/{id}")

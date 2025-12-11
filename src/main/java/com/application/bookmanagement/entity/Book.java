@@ -19,7 +19,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String bookTitle;
 
     @Column(name = "author")
