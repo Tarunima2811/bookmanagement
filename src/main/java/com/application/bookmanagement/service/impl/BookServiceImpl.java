@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +29,17 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> findBookById(UUID id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Optional<List<Book>> findBookByTitleContaining(String bookTitle) {
+        return repository.findBookByTitleContaining(bookTitle);
+    }
+
+    @Override
+    public Optional<List<Book>> findBookByAuthor(String bookAuthor) {
+        return repository.findBookByAuthor(bookAuthor);
+    }
+
 
     @Override
     public Book addOrUpdateBook(Book book) {

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class BookController {
     @Autowired
     LogBuilder logBuilder;
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "all")
     public Page<Book> findAllBooksByPage(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "5") int size,
                                    @RequestParam(defaultValue = "bookTitle") String sortBy,
@@ -36,6 +37,28 @@ public class BookController {
         Optional<Book> book = service.findBookById(id);
         if (book.isPresent())
             return ResponseEntity.ok(book.get());
+        else
+            return ResponseEntity.notFound().build();
+
+    }
+
+    @GetMapping(path = "bookByTitle")
+    public ResponseEntity<?> findBookContainingTitle(@RequestParam String bookTitle) {
+        logBuilder.info(String.format("Finding books containing in title: %s", bookTitle));
+        Optional<List<Book>> bookList = service.findBookByTitleContaining(bookTitle);
+        if (bookList.isPresent())
+            return ResponseEntity.ok(bookList.get());
+        else
+            return ResponseEntity.notFound().build();
+
+    }
+
+    @GetMapping(path = "bookByAuthor")
+    public ResponseEntity<?> findBookByAuthor(@RequestParam String bookAuthor) {
+        logBuilder.info(String.format("Finding books written by: %s", bookAuthor));
+        Optional<List<Book>> bookList = service.findBookByAuthor(bookAuthor);
+        if (bookList.isPresent())
+            return ResponseEntity.ok(bookList.get());
         else
             return ResponseEntity.notFound().build();
 
@@ -56,5 +79,4 @@ public class BookController {
         logBuilder.info(String.format("Deleting book by id %s", id));
         service.deleteBook(id);
     }
-
 }
