@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Book")
+@SQLDelete(sql = "UPDATE Book SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -36,4 +40,7 @@ public class Book {
 
     @Column(name = "publishDate")
     private Date bookPublishDate;
+
+    @Column(name = "deleted")
+    private boolean deleted = Boolean.FALSE;
 }

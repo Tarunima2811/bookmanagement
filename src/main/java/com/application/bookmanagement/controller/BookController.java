@@ -75,8 +75,15 @@ public class BookController {
     }
 
     @DeleteMapping(path = "delete/{id}")
-    public void deleteBook(@PathVariable UUID id) {
-        logBuilder.info(String.format("Deleting book by id %s", id));
-        service.deleteBook(id);
+    public ResponseEntity<?> deleteBook(@PathVariable UUID id) {
+        if (service.findBookById(id).isPresent()) {
+            logBuilder.info(String.format("Deleting book by id %s", id));
+            service.deleteBook(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            logBuilder.info(String.format("Book with id not found: %s", id));
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }
