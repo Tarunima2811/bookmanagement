@@ -38,29 +38,29 @@ public class BookController {
         if (book.isPresent())
             return ResponseEntity.ok(book.get());
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
 
     }
 
     @GetMapping(path = "bookByTitle")
     public ResponseEntity<?> findBookContainingTitle(@RequestParam String bookTitle) {
         logBuilder.info(String.format("Finding books containing in title: %s", bookTitle));
-        Optional<List<Book>> bookList = service.findBookByTitleContaining(bookTitle);
-        if (bookList.isPresent())
-            return ResponseEntity.ok(bookList.get());
+        List<Book> bookList = service.findBookByTitleContaining(bookTitle);
+        if (!bookList.isEmpty())
+            return ResponseEntity.ok(bookList);
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
 
     }
 
     @GetMapping(path = "bookByAuthor")
     public ResponseEntity<?> findBookByAuthor(@RequestParam String bookAuthor) {
         logBuilder.info(String.format("Finding books written by: %s", bookAuthor));
-        Optional<List<Book>> bookList = service.findBookByAuthor(bookAuthor);
-        if (bookList.isPresent())
-            return ResponseEntity.ok(bookList.get());
+        List<Book> bookList = service.findBookByAuthor(bookAuthor);
+        if (!bookList.isEmpty())
+            return ResponseEntity.ok(bookList);
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
 
     }
 

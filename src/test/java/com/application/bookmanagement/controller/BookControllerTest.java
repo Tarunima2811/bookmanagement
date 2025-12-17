@@ -43,14 +43,14 @@ public class BookControllerTest {
     @Test
     void testFindBookContainingTitle() {
         List<Book> bookList = Arrays.asList(book1, book2);
-        when(service.findBookByTitleContaining(anyString())).thenReturn(Optional.of(bookList));
+        when(service.findBookByTitleContaining(anyString())).thenReturn(bookList);
         assertEquals(controller.findBookContainingTitle(anyString()), ResponseEntity.ok(bookList));
     }
 
     @Test
     void testFindBookContainingTitleWhenNoBookFound() {
-        when(service.findBookByTitleContaining(anyString())).thenReturn(Optional.empty());
-        assertEquals(controller.findBookContainingTitle(anyString()), ResponseEntity.notFound().build());
+        when(service.findBookByTitleContaining(anyString())).thenReturn(new ArrayList<>());
+        assertEquals(controller.findBookContainingTitle(anyString()), ResponseEntity.noContent().build());
     }
 
     @Test

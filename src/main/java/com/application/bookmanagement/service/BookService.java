@@ -13,9 +13,9 @@ public interface BookService {
 
     Optional<Book> findBookById(UUID id);
 
-    Optional<List<Book>> findBookByTitleContaining(String bookTitle);
+    List<Book> findBookByTitleContaining(String bookTitle);
 
-    Optional<List<Book>> findBookByAuthor(String bookAuthor);
+    List<Book> findBookByAuthor(String bookAuthor);
 
     Book addOrUpdateBook(Book book);
 

@@ -14,9 +14,9 @@ import java.util.UUID;
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
     @Query("SELECT book FROM Book book where book.bookTitle LIKE %:bookTitle%")
-    Optional<List<Book>> findBookByTitleContaining(@Param("bookTitle") String bookTitle);
+    List<Book> findBookByTitleContaining(@Param("bookTitle") String bookTitle);
 
     @Query("SELECT book FROM Book book where book.bookAuthor LIKE %:bookAuthor%")
-    Optional<List<Book>> findBookByAuthor(@Param("bookAuthor") String bookAuthor);
+    List<Book> findBookByAuthor(@Param("bookAuthor") String bookAuthor);
 }
 

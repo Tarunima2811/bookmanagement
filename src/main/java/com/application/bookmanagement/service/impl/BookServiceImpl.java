@@ -31,12 +31,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<List<Book>> findBookByTitleContaining(String bookTitle) {
+    public List<Book> findBookByTitleContaining(String bookTitle) {
         return repository.findBookByTitleContaining(bookTitle);
     }
 
     @Override
-    public Optional<List<Book>> findBookByAuthor(String bookAuthor) {
+    public List<Book> findBookByAuthor(String bookAuthor) {
         return repository.findBookByAuthor(bookAuthor);
     }
 
