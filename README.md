@@ -7,13 +7,14 @@ A simple Spring Boot application for managing books (CRUD operations) using Post
 1. Find all books (with Pagination & Sorting)
 2. Create, update, and soft delete books 
 3. Search for books using partial title or author name 
-4. RESTful API design 
-5. Spring Boot + Spring Data JPA 
-6. PostgreSQL database integration 
-7. Validation and exception handling 
-8. Logging with appropriate messages and HTTP Response codes 
-9. Layered architecture (Controller, Service, Repository)
-10. Multi-container application (using Docker)
+4. Search for book using any parameters
+5. RESTful API design 
+6. Spring Boot + Spring Data JPA 
+7. PostgreSQL database integration 
+8. Validation and exception handling 
+9. Logging with appropriate messages and HTTP Response codes 
+10. Layered architecture (Controller, Service, Repository)
+11. Multi-container application (using Docker)
 
 ## Tech Stack
 
@@ -44,7 +45,14 @@ Docker
    postman request 'localhost:8080/bookmanagement/bookByTitle?bookTitle=Harry%20Potter'
 4. GET - GET BOOK BY AUTHOR:
    postman request 'localhost:8080/bookmanagement/bookByAuthor?bookAuthor=Blyton'
-5. POST - ADD OR UPDATE BOOK: 
+5. POST - SEARCH
+   postman request POST 'localhost:8080/bookmanagement/search' \
+   --header 'Content-Type: application/json' \
+   --body '{
+   "bookTitle": "Arabian",
+   "bookLanguage": "Arabic"
+   }'
+6. POST - ADD OR UPDATE BOOK: 
    postman request POST 'localhost:8080/bookmanagement/addOrUpdateBook' \
    --header 'Content-Type: application/json' \
    --body '{
@@ -54,8 +62,8 @@ Docker
    "bookGenre": "Fiction",
    "bookPublisher": null,
    "bookPublishDate": "2002-05-05T00:00:00.000+00:00"
-   }'
-6. DELETE - DELETE BOOK BY ID:
+   }' 
+7. DELETE - DELETE BOOK BY ID:
    postman request DELETE 'localhost:8080/bookmanagement/delete/5b77769e-784d-446e-a870-7dcfcc004e42'
 
 ## Running the Application
@@ -101,5 +109,7 @@ Authentication & authorization (JWT)
 Rate Limiting to protect API from abuse
 
 Caching of frequently queried books
+
+Creation of DTOs so that Entity is not exposed
 
 More elaborate data model

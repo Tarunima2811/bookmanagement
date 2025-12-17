@@ -71,6 +71,16 @@ public class BookController {
 
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<?> searchBooks(@RequestBody Book book) {
+        logBuilder.info("Searching books with multiple parameters");
+        List<Book> bookList = service.searchBooks(book);
+        if (!bookList.isEmpty())
+            return ResponseEntity.ok(bookList);
+        else
+            return ResponseEntity.noContent().build();
+    }
+
     @PostMapping(path = "addOrUpdateBook")
     public ResponseEntity<?> addOrUpdateBook(@RequestBody Book book) {
         logBuilder.info(String.format("Adding/Updating book: %s", book.getBookTitle()));

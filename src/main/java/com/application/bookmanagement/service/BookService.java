@@ -17,6 +17,8 @@ public interface BookService {
 
     List<Book> findBookByAuthor(String bookAuthor);
 
+    List<Book> searchBooks(Book book);
+
     Book addOrUpdateBook(Book book);
 
     void deleteBook(UUID id);

@@ -4,6 +4,8 @@ import com.application.bookmanagement.entity.Book;
 import com.application.bookmanagement.repository.BookRepository;
 import com.application.bookmanagement.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -38,6 +40,21 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findBookByAuthor(String bookAuthor) {
         return repository.findBookByAuthor(bookAuthor);
+    }
+
+    @Override
+    public List<Book> searchBooks(Book book) {
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                .withIgnoreNullValues()
+                .withMatcher("bookTitle", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("bookAuthor", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("bookGenre", ExampleMatcher.GenericPropertyMatcher::contains)
+                .withMatcher("bookLanguage", ExampleMatcher.GenericPropertyMatcher::contains);
+        Example<Book> searchBook = Example.of(book, matcher);
+        return repository.findAll(searchBook);
     }
 
 
